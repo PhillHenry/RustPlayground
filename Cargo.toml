@@ -3,4 +3,10 @@ name = "RustPlayground"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
+[workspace]
+members = [
+    "main",
+    "tests",
+    ]
+[workspace.dependencies]
+main = { version = "0.1.0", path = "./main", default-features = false }

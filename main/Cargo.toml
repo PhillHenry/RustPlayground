@@ -2,5 +2,15 @@
 name = "main"
 version = "0.1.0"
 edition = "2021"
+include = [
+    "src/**/*.rs",
+    "tests/*.rs",
+    "Cargo.toml",
+]
+
+[lib]
+name = "main"
+path = "src/lib.rs"
+bench = false
 
 [dependencies]
