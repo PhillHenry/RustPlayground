@@ -12,7 +12,6 @@ mod tests {
         numbers.shuffle(&mut rng);
 
         print!("Tests!");
-        // sort(vec!([1,0,2,9,3,6,5,8,4]))
         let vec: Vec<i32> = sort(numbers);
         let expected: Vec<i32> = (1..=10).collect();
         assert_eq!(vec, expected)
