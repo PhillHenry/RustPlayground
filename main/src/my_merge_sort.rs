@@ -18,19 +18,23 @@ pub fn sort<T: Clone + Ord + Copy>(xs: Vec<T>) -> Vec<T> {
         let x0: Vec<T> = sort(vec0);
         let x1: Vec<T> = sort(vec1);
         let mut sorted: Vec<T> = vec![xs[0]; size];
-        let mut i = 0;
-        let mut j = 0;
-        let mut index = 0;
-        while index < size {
-            if i < x0.len() && (j == x1.len() || x0[i] < x1[j]) {
-                sorted[index] = x0[i];
-                i += 1;
-            } else {
-                sorted[index] = x1[j];
-                j += 1;
-            }
-            index += 1;
-        }
+        merge(x0, x1, &mut sorted);
         return sorted;
+    }
+}
+
+fn merge<T: Clone + Ord + Copy>(xs: Vec<T>, ys: Vec<T>, sorted: &mut Vec<T>) {
+    let mut i = 0;
+    let mut j = 0;
+    let mut index = 0;
+    while index < sorted.len() {
+        if i < xs.len() && (j == ys.len() || xs[i] < ys[j]) {
+            sorted[index] = xs[i];
+            i += 1;
+        } else {
+            sorted[index] = ys[j];
+            j += 1;
+        }
+        index += 1;
     }
 }
