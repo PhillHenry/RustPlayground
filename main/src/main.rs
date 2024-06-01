@@ -6,9 +6,9 @@ fn main() {
     let mut s1 = String::from("hello");
 
     let s_mutated = main::mutate(&mut s1);
-    // this is allowed:
+    // this is allowed IN THIS ORDER:
     println!("s_mutated = {}", s_mutated);
-    println!("s1 = {}", s1);
+    println!("s1 = {}", s1); // s1 has been mutated!
     // but if the above 2 lines were replaced with:
     //println!("s_mutated = {}, s1 = {}", s_mutated, s1);
     // it would not be allowed!
@@ -18,7 +18,8 @@ fn main() {
     let len = main::mutate_length(&mut s1);
     println!("The length of '{}' is {}", s1, len); // s1 is still valid here
 
-    println!("returned = {}", main::mutate_in_own_thread(s1));
+    let handle = main::mutate_in_own_thread(s1);
+    println!("returned = {}", handle.join().unwrap());
     // println!("s1 = {} ", s1); // <-- can no longer use s1
 }
 
@@ -37,14 +38,15 @@ mod main {
     }
 
     use std::thread;
-    //use crate::thread;
+    use std::thread::JoinHandle;
 
-    pub fn mutate_in_own_thread(mut s: String) -> usize {
+    pub fn mutate_in_own_thread(mut s: String) -> JoinHandle<String> {
         //s.push_str("mutant");
         let handle = thread::spawn(move || {
             s.push_str("mutant");
+            return s
         });
         // println!("s = {}", s); // s has now been lost into the ether
-        1 // s.len()
+        return handle
     }
 }
