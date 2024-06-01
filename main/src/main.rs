@@ -5,6 +5,8 @@ use std::thread;
 fn main() {
     let mut s1 = String::from("hello");
 
+    main::non_mutation(&s1);
+
     let mut s_mutated = main::mutate(&mut s1);
     // this is allowed IN THIS ORDER:
     println!("s_mutated = {}", s_mutated);
@@ -30,7 +32,12 @@ fn main() {
 }
 
 mod main {
-    pub fn mutate(s: &mut String) -> &mut String {
+
+    pub fn non_mutation(s: &String) { // & means I'm borrowing it but caller can continue using it
+        println!("I'm not mutating {}", s);
+    }
+
+    pub fn mutate(s: &mut String) -> &mut String { // &mut seems to say "I'm borrowing it AND mutating it"
         s.push_str(", mutant");
         return s
     }
