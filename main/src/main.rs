@@ -4,7 +4,7 @@ use std::thread;
 
 fn main() {
     let mut s1 = String::from("hello");
-    let len = main::calculate_length(&mut s1); // Borrowing s1 immutably
+    let len = main::mutate_length(&mut s1);
     println!("The length of '{}' is {}", s1, len); // s1 is still valid here
 
     println!("returned = {}", main::mutate_in_own_thread(s1));
@@ -13,7 +13,7 @@ fn main() {
 
 mod main {
 
-    pub fn calculate_length(s: &mut String) -> usize {
+    pub fn mutate_length(s: &mut String) -> usize {
         s.push_str("mutant");
         s.len()
     }
@@ -26,6 +26,7 @@ mod main {
         let handle = thread::spawn(move || {
             s.push_str("mutant");
         });
+        // println!("s = {}", s); // s has now been lost into the ether
         1 // s.len()
     }
 }
