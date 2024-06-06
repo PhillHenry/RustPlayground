@@ -30,8 +30,13 @@ fn main() {
     println!("returned = {}", handle.join().unwrap());
     // println!("s1 = {} ", s1); // <-- can no longer use s1
 
-    let maybe_fail = main::fails_on_odds(2);
-    println!("{:?}", maybe_fail);
+    println!("{:?}", main::fails_on_odds(2));
+    let fails = main::fails_on_odds(1);
+    let is_err = std::panic::catch_unwind(|| fails.unwrap()).is_err(); // prints a stack trace but continues anyway
+    // println!("{:?}", fails);
+    println!("{:?}", is_err);
+    // println!("{}", fails.unwrap()); // stack trace!
+    println!("That's all folks!")
 }
 
 mod main {
