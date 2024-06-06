@@ -29,9 +29,19 @@ fn main() {
     let handle = main::mutate_in_own_thread(s1);
     println!("returned = {}", handle.join().unwrap());
     // println!("s1 = {} ", s1); // <-- can no longer use s1
+
+    let maybe_fail = main::fails_on_odds(2);
+    println!("{:?}", maybe_fail);
 }
 
 mod main {
+
+    pub fn fails_on_odds(x: i32) -> Result<String, String> {
+        if x % 2 == 0 {
+            return Ok(format!("{x} is OK"))
+        }
+        return Err(format!("{x} is odd"))
+    }
 
     pub fn non_mutation(s: &String) { // & means I'm borrowing it but caller can continue using it
         println!("I'm not mutating {}", s);
